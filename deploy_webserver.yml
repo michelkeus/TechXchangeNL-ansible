@@ -22,6 +22,12 @@
        - php-cli
        - git
        - firewalld
+
+    - name: Start firewalld service if needed
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
     
     - name: Configure firewall for access
       ansible.posix.firewalld:
