@@ -24,25 +24,29 @@ AAP will use the integrations with Terraform to be able to do it's thing on the 
 
 So what are the basics we have set up for you:
 1. A machine credential named RHEL. You use this machine credential to be able to run your playbooks on the providioned servers.
-2. A Custom Credential _Type_ called "Hashicorp Terraform Cloud". You use this later to create your credential. See [here](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6/html/getting_started_with_hashicorp_and_ansible_automation_platform/terraform-product#creating-custom-credential-type) for details.
-3. An Inventory called "local" with the host "localhost" for api based automations.
-4. A token to be able to do stuff in Hashicorp Terraform Cloud. This token is available at: <TBC>
-5. An Execution Environment called "ee-tech-x-change-nl" in AAP that provides all the collections and dependencies you need in this workshop.
+2. A Custom Credential _Type_ called `Hashicorp Terraform Cloud`. You use this later to create your credential. See [here](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6/html/getting_started_with_hashicorp_and_ansible_automation_platform/terraform-product#creating-custom-credential-type) for details.
+3. An Inventory called `local` with the host `localhost` for api based automations.
+4. A token to be able to do stuff in Hashicorp Terraform Cloud. This token is available as a var in HCP.
+5. An Execution Environment called `ee-tech-x-change-nl` in AAP that provides all the collections and dependencies you need in this workshop.
+
 
 ## Building Blocks
 You need to create some building blocks in AAP for this workshop. This document explains what you need to make. When you are done, go back to the README.md in the workshop repo.
 
-note: wherever you can and/or need to specify an Organisation, choose "TechXchangeNL'.
+note: wherever you can and/or need to specify an Organisation, choose `TechXchangeNL`.
+
 
 ### Project
 You need to create a project in AAP. The project is your repository with playbooks.
+- Fork the
 - The location of the git repo with the platybooks for this workshop: [here](https://github.com/TechXchangeNL/ansible.git)
+
 
 ### Controller Credentials
 Apart from the already available machine credential, you need a few more..
 
-- A Controller Credential to be able to communicate with Hashicorp Terraform Cloud. Use Credential Type "Hashicorp Terraform Cloud" and the provided token in HCP.
-- A Controller Credential to be able to sync the Terraform State File that will be used for the inventory source. Choose the credential type "Terraform backend configuration". In the backend configuration field enter the following:
+- A Controller Credential to be able to communicate with Hashicorp Terraform Cloud. Use Credential Type `Hashicorp Terraform Cloud` and the provided token in HCP.
+- A Controller Credential to be able to sync the Terraform State File that will be used for the inventory source. Choose the credential type `Terraform backend configuration`. In the backend configuration field enter the following:
 
   ```text
   hostname = "app.terraform.io"  
@@ -52,6 +56,7 @@ Apart from the already available machine credential, you need a few more..
   ```
   For token, enter the token provided in HCP
   For workspace enter the workspace you made in Terraform (you did...right?)
+
 
 ### EDA Credentials
 For the new HCP Terraform _Actions_ feature we need to configure EDA and thus EDA Credentials. These are made under `Automation Decisions > Infrastructure > Credentials` We need two:
