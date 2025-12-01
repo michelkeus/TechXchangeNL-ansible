@@ -2,17 +2,17 @@
 
 ## The basics
 The division of work between HCP and AAP (as likely already explained to you) is:
-- HCP: Building up and changing infrastructure in the cloud, among which are RHEL10 servers
+- HCP Terraform: Building up and changing infrastructure in the cloud, among which are RHEL10 servers
 - AAP: Configure the servers to become a webserver serving a website
 
-This seperation of concerns means HCP has all the credentials needed to do it's thing in the cloud of choice (AWS) and AAP has no credentials nor visibility in the cloud infrastructure. AAP uses the integrations with HCP to be able to do it's thing on the provisioned infrastructure.
+This seperation of concerns means HCP Terraform has all the credentials needed to do it's thing in the cloud of choice (AWS) and AAP has no credentials nor visibility in the cloud infrastructure. AAP uses the integrations with HCP Terraform to be able to do it's thing on the provisioned infrastructure.
 
 So what are the basics we have set up for you:
 1. AAP has the notion of _Organizations_. For this workshop an Organization named `TechXchangeNL` has been made and you will work within that organization.
-2. A _Machine Credential_ named `RHEL`. You use this machine credential to be able to run your playbooks on the provisioned servers. HCP deploys the keys inside this credential to the cloud.
+2. A _Machine Credential_ named `RHEL`. You use this machine credential to be able to run your playbooks on the provisioned servers. HCP Terraform deploys the keys inside this credential to the cloud.
 3. A _Custom Credential Type_ called `Hashicorp Terraform Cloud`. You will use this later to create your own credential of this type. See [here](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6/html/getting_started_with_hashicorp_and_ansible_automation_platform/terraform-product#creating-custom-credential-type) for details.
 4. An _Inventory_ called `local` with the host `localhost` for api based automations. Playbooks that use an api for their work typically use localhost.
-5. A _token_ to be able to do stuff in Hashicorp Terraform Cloud. This token is available as a var in HCP.
+5. A _token_ to be able to do stuff in Hashicorp Terraform Cloud. This token is available as a var in HCP Terraform.
 6. An _Execution Environment_ called `ee-tech-x-change-nl` in AAP that provides all the collections and dependencies you need in this workshop. For Terraform there are currently 2 certified ansible collections:
   - [cloud.terraform](https://caap.fvz.ansible-labs.de/content/collections/published/cloud/terraform/documentation/) - Maintained by Red Hat. It uses the terraform cli to talk to terraform.
   - [hashicorp.terraform](https://caap.fvz.ansible-labs.de/content/collections/published/hashicorp/terraform/documentation/) - Maintained by HashiCorp
@@ -43,7 +43,7 @@ You need to create a project in AAP. The project is your repository with playboo
 ### Controller Credentials
 Apart from the already available machine credential, you need a few more..
 
-- A Credential to be able to communicate with Hashicorp Terraform Cloud. Use Credential Type `Hashicorp Terraform Cloud` and the provided token in a var in HCP.
+- A Credential to be able to communicate with Hashicorp Terraform Cloud. Use Credential Type `Hashicorp Terraform Cloud` and the provided token in a var in HCP Terraform (formely known as Terraform Cloud).
 - A Credential to be able to sync the Terraform State File that will be used for the inventory source. Choose the credential type `Terraform backend configuration`. In the backend configuration field enter the following:
 
   ```text
@@ -52,7 +52,7 @@ Apart from the already available machine credential, you need a few more..
   token = "YOURTOKENHERE"  
   workspaces { name = "YOURWORKSPACE" }  
   ```
-  For token, again, enter the token provided in a var in HCP
+  For token, again, enter the token provided in a var in HCP Terraform
   For workspace enter the workspace you made in Terraform (you did...right?)
 
 ### Inventories
@@ -69,9 +69,9 @@ keyed_groups:
     key: tags.Role
 ```
   What does this do:
-  - `compose` will use the value of the key `public_ip` received from HCP to create a key ansible_host with the same value. `ansible_host` is used by jobs to connect to the host.
-  - `hostnames` is used to use the value of the tag `Name` as received from HCP to give the host its name.
-  - `keyed_groups` is used to make inventory groups from tag values as received from HCP. So here a group will be created with prefix role and the value from tag Role as received from HPC. So: `role_<tagvalue>`. The host will be placed in this group.
+  - `compose` will use the value of the key `public_ip` received from HCP Terraform to create a key ansible_host with the same value. `ansible_host` is used by jobs to connect to the host.
+  - `hostnames` is used to use the value of the tag `Name` as received from HCP Terraform to give the host its name.
+  - `keyed_groups` is used to make inventory groups from tag values as received from HCP Terraform. So here a group will be created with prefix role and the value from tag Role as received from HPC. So: `role_<tagvalue>`. The host will be placed in this group.
 
 Also, you need the `Terraform Backend Configuration` Credential you made before as the credential for this source. You can test it by syncing the source manually.
 Do **NOT** enable _update on launch_.
@@ -79,7 +79,7 @@ Do **NOT** enable _update on launch_.
 
 ### Playbooks
 As you can see in the repository where this README lives, there are 3 playbooks:
-- apply_plan.yml This playbook will run and apply a plan in HCP.
+- apply_plan.yml This playbook will run and apply a plan in HCP Terraform.
 - deploy_webserver.yml. This playbook will deploy a webserver (apache)
 - deploy_website.yml. This playbook will deploy a website
 
