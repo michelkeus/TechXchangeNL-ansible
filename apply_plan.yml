@@ -2,4 +2,8 @@
   hosts: all
   tasks:
   - name: Apply a terraform plan
-
+    hashicorp.terraform.run:
+      workspace: "terraform-workshop-mkeus"
+      organization: "TechXchangeNL"
+      run_message: "Terraform Apply"
+      auto_apply: true
