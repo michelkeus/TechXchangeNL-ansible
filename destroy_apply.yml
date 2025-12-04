@@ -9,5 +9,5 @@
       run_message: "Terraform Apply"
       is_destroy: true
       auto_apply: true
-      state: present
+      state: absent
     
