@@ -7,3 +7,5 @@
       organization: "TechXchangeNL"
       run_message: "Terraform Apply"
       auto_apply: true
+      state: present
+    
