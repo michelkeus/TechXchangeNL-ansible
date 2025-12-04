@@ -1,5 +1,6 @@
 - name: HCP
   hosts: all
+  gather_facts: no
   tasks:
   - name: Apply a terraform plan
     hashicorp.terraform.run:
