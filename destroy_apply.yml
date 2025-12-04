@@ -7,6 +7,7 @@
       workspace: "terraform-workshop-mkeus"
       organization: "TechXchangeNL"
       run_message: "Terraform Apply"
+      poll: false
       is_destroy: true
       auto_apply: true
       state: absent
